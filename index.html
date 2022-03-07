@@ -71,6 +71,7 @@
                 });
 
                 //add tilelayers
+                var gray = L.esri.basemapLayer('DarkGray');
                 var imagery = L.esri.basemapLayer('ImageryFirefly');
                 var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'});
@@ -136,7 +137,7 @@
                 };
 
                 L.control.layers(basemaps, overlaymaps).addTo(map);
-                gray.addTo(map);
+                osm.addTo(map);
             
             
 //            $('.menu-ui a').on('click', function() {
