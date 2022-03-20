@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-
-
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Resident Reporting Tool</title>
+    <title>Resident Reporting</title>
 
     <!-- Load Leaflet from CDN -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""
-    />
+      crossorigin=""/>
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -27,10 +23,11 @@
     <!-- Load Esri Leaflet Geocoder from CDN -->
     <link
       rel="stylesheet"
-      href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"
-    />
+      href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"/>
     <script src="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.js"></script>
-                                                                                             
+      
+    <link rel="stylesheet" href="css/style.css">
+<!--                                                                                             
     <style>
       body {
         margin: 0;
@@ -46,19 +43,31 @@
         font-size: 14px;
         color: #323232;
       }
+
     </style>
+-->
     
 
-    
   </head>
-  
-  <body>
-      <div id="maptitle"><p id="mapT">Plumsted Township Community Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
-      </div>
-      
-      <div id="map"></div>
-
-    <script>
+<body>
+<!--
+	<body onload="init()">
+		<!--create information window for users giving map summary and data sources-->
+<!--		<div id="infowindow" visibility: hidden title = "How to Use"><p>
+            <b>NOTE: If you require immediate medical attention, call 911!</b>
+            <br><br>
+            This map can be used to report various issues within the community. Simply click on the map to place a point where the issue exists, then select the type of issue and the priority level. You can see issues others in the community have already reported, and you can see the current status of all reports. After your report is submitted, it will be passed along to the appropriate party for resolution. </p>
+        </div>
+        -->
+		<!--create div for map title and info button-->
+        <div id="maptitle"><p id="mapT">Plumsted Township Community Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
+        </div>
+		
+        <!--create div for the map-->
+		<div id="map">
+        </div>
+        
+        <script>
       
       const NELAT = 40.072466;
       const NELONG = -74.493870;
@@ -135,21 +144,6 @@
               .openPopup();
           });
       });
-      /*
-      var trailheads = L.esri
-        .featureLayer({
-          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0"
-        })
-        .addTo(map);
-      
-      var trails = L.esri
-        .featureLayer({
-          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0"
-        })
-        .addTo(map);
-      */
-      
-
       
       var reports = L.esri
         .featureLayer({
@@ -166,452 +160,4 @@
 
     </script>
   </body>
-</html>
-
-<!--
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title>Community Reporting Tool</title>
-
-		put your external stylesheet links here
-		<link rel="stylesheet" href="lib/jquery-ui-1.12.1/jquery-ui.css">
-		<link rel="stylesheet" href="lib/leaflet.css">
-		<link rel="stylesheet" href="css/style.css">
-        
-        <script src="lib/jquery-3.5.1.js"></script>
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="lib/leaflet.js"></script>
-        <script src="lib/leaflet-search.src.js"></script>
-        <script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
-        integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
-        crossorigin=""></script>
-        
-        <script type="text/javascript" src= "lib/jquery-ui-1.12.1//jquery-ui.js"></script>
-        <script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"></script>
-        
-
-<!--        <script src="data/Eagle.js"></script>
-        <script src="data/EmgServ.js"></script>
-        <script src="data/Hos.js"></script>
-        <script src="data/Mun.js"></script>
-        <script src="data/Rec.js"></script>-->
-        
-        
-<!--
-        <nav class='menu-ui'>
-            <a href='#' class='active' data-filter='all'>Show all</a>
-            <a href='#' data-filter='9'>Troop 9</a>
-            <a href='#' data-filter='19'>Troop 19</a>
-            <a href='#' data-filter='109'>Troop 109</a>
-        </nav>
-
-        
-        <script type="text/javascript">
-            //create blank function to create info window dialog when DOM is ready
-            $(function () {
-                $("#infowindow").dialog({
-                    scrollTop: 0,
-                    autoOpen: true,
-                    height: 450,
-                    width: 900
-
-                });
-                $("#infowindow").scrollTop(0);
-                $(".info").click(function(){        
-                    $("#infowindow").dialog("open");
-                });
-
-            });
-            
-            var map;
-            
-/*            var eagleIcon = L.icon({
-                iconUrl: 'img/eagle.png',
-                iconSize: [32,42],
-                iconAnchor: [20,45]
-            });*/
-
-            function init() {
-
-                map = L.map('mapid', {
-                    center: [40.072466, -74.493870],
-                    zoom: 14,
-                });
-
-                //add tilelayers
-                var gray = L.esri.basemapLayer('DarkGray');
-                var imagery = L.esri.basemapLayer('ImageryFirefly');
-                var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'});
-
-
-/*                //Eagle Projects
-                var eagle = L.geoJson(eagleJson, {
-                    onEachFeature: onEachFeature,
-                    pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: eagleIcon})},
-                });
-
-
-                //Emergency Services
-                var emg = L.geoJson(emgJson, {
-                     onEachFeature: function(feature,layer){
-                        layer.bindPopup(feature.properties.Name);
-                    },
-                    style: function(feature) {
-                        switch (feature.properties.Use) {
-                                    case 'Fire': return {color: "red"};
-                                    case 'Police': return {color: "blue"};
-                                    case 'EMS': return {color: "white"};
-                        }
-                    }
-                }).addTo(map);    
-
-                //Parks
-                var rec = L.geoJson(recJson, {
-                    onEachFeature: function(feature,layer){
-                        layer.bindPopup(feature.properties.Name);
-                    },
-                    color: "green"
-                }).addTo(map);
-
-                //Municipal
-                var mun = L.geoJson(munJson, {
-                    onEachFeature: function(feature,layer){
-                        layer.bindPopup(feature.properties.Name);
-                    },
-                    color: "lightblue"
-                }).addTo(map);
-
-                //Hospitals
-                var hos = L.geoJson(hosJson, {
-                    onEachFeature: function(feature,layer){
-                        layer.bindPopup(feature.properties.Name);
-                    },
-                    color: "white"
-                }).addTo(map);*/
-
-                var basemaps = {
-                    "Dark Gray": gray,
-                    "Street Maps": osm,
-                    "Imagery": imagery
-                };
-
-                var overlaymaps = {
-                    "Municipal": mun,
-                    "Emg Services": emg,
-                    "Hospitals": hos,
-                    "Recreation": rec,
-                    "Eagle Projects": eagle
-                };*/
-
-                L.control.layers(basemaps).addTo(map);
-                osm.addTo(map);
-            
-            
-//            $('.menu-ui a').on('click', function() {
-//                // For each filter link, get the 'data-filter' attribute value.
-//                var filter = eagle.data('filter');
-//                eagle.addClass('active').siblings().removeClass('active');
-//                markers.setFilter(function(f) {
-//                    // If the data-filter attribute is set to "all", return
-//                    // all (true). Otherwise, filter on markers that have
-//                    // a value set to true based on the filter name.
-//                        return (filter === 'all') ? true : f.properties[filter] === true;
-//                    });
-//                    return false;
-//                });
-//
-                
-            };
-            
-//            $('input[name=troop]').click(function(){
-//                ar
-//            })
-            
-            
-            
-            
-            
-
-            //function to attach popups to each mapped feature
-            function onEachFeature(feature, layer) {
-
-                //no property named popupContent; instead, create html string with all properties
-                var popupContent = "";
-                if (feature.properties) {
-                    //loop to add feature property names and values to html string
-                    for (var property in feature.properties){
-                        popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
-                    }
-                    layer.bindPopup(popupContent);
-                };
-            };            
-//            
-//            var overlays;
-//            var sidebar = L.control.sidebar('sidebar', { autoPan: false, closeButton: false });
-//            sidebar.addTo(map);
-//            //Leaflet Search with OSM Geocode
-//
-//            var osmsearch = new L.Control.Search({
-//                url: 'https://nominatim.openstreetmap.org/search?format=json&q={s}',
-//                jsonpParam: 'json_callback',
-//                propertyName: 'display_name',
-//                propertyLoc: ['lat','lon'],
-//                circleLocation: false,
-//                autoType: false,
-//                autoCollapse: false,
-//                minLength: 2,
-//                zoom:13,
-//                textPlaceholder: 'Search Addresses',
-//                collapsed: false
-//            });
-//            osmsearch.addTo(map);
-//
-//            var circle;
-//            var marker;
-//            osmsearch.on('search_locationfound', function(e) {
-//                osmsearch.collapse();
-//                if(marker){
-//                map.removeLayer(marker);
-//                }
-//                var name = e.display_name;
-//                marker = new L.marker([e.latlng.lat, e.latlng.lng], {icon: ovrdcMarker}).addTo(map);
-//            });
-//
-//            //Toggle OSM Search and Feature Search - remove if no feature search
-//            var hash = L.hash(map);
-//            var gpsLocate = L.control.locate({follow: true, locateOptions: {enableHighAccuracy: true}});
-//            //gpsLocate.addTo(map);
-//            var homeExtent = L.control.defaultExtent({});
-//            //homeExtent.addTo(map);
-//            var fullscreen = L.control.fullscreen();
-//
-//            
-//            
-//            
-//var globalsearchToggle = new L.easyButton({
-//    states: [{
-//      stateName: 'show',
-//      icon: 'fa-exchange fa-lg',
-//      title: 'Search Addresses',
-//      onClick: function(btn, map) {
-//        osmsearch.addTo(map);
-//      btn.state('hide');
-//        }
-//      },{
-//      stateName: 'hide',
-//    icon: 'fa-exchange fa-border fa-lg',
-//      title: 'Search Features',
-//      onClick: function(btn, map) {
-//        map.removeControl(osmsearch);
-//        btn.state('show');
-//      }
-//    }]
-//  });
-////globalsearchToggle.addTo(map);
-//
-//var sidebarToggle = L.easyButton({
-//      states: [{
-//              stateName: 'open-sidebar',   // name the state
-//              icon:      'fa-bars fa-lg',          // and define it's properties
-//              title:     'Show Sidebar', // like it's title
-//              onClick: function(btn, map) {  // and it's callback
-//                  sidebar.show();
-//                  btn.state('close-sidebar'); // change state on click!
-//              }
-//          }, {
-//              stateName: 'close-sidebar',
-//              icon:      'fa-times fa-2x',
-//              title:     'Hide Sidebar',
-//              onClick: function(btn, map) {
-//                  sidebar.hide();
-//                  btn.state('open-sidebar');
-//              }
-//      }],
-//    id: 'menu',
-// });
-//var stogglebar = L.easyBar([sidebarToggle], {id: 'toggle'}).addTo(map);
-//var leafletprint = L.easyPrint();
-////end toolbar
-//sidebar.on('hide', function () {
-//    sidebarToggle.state('open-sidebar');
-//});
-//sidebar.on('show', function () {
-//    sidebarToggle.state('close-sidebar');
-//});
-////mobile toolbar menu
-////--tools toggle on small screens
-//var toolshidden = false;
-//var mobilescreen = false;
-//var tools = L.easyButton({
-//      states: [{
-//              stateName: 'show-tools',   // name the state
-//              icon:      'fa-cogs fa-lg',          // and define it's properties
-//              title:     'Show Map Tools', // like it's title
-//              onClick: function(btn, map) {  // and it's callback
-//                  leafletprint.addTo(map);
-//                  gpsLocate.addTo(map);
-//                  homeExtent.addTo(map);
-//                  fullscreen.addTo(map);
-//                  
-//                  globalsearchToggle.addTo(map);
-//                  
-//                  btn.state('hide-tools'); // change state on click!
-//                  toolshidden = false;
-//                  //console.log(toolshidden + ' state changed to hideTools');
-//              }
-//          }, {
-//              stateName: 'hide-tools',
-//              icon:      'fa-cogs fa-border fa-lg',
-//              title:     'Hide Map Tools',
-//              onClick: function(btn, map) {
-//                  map.removeControl(leafletprint);
-//                  map.removeControl(gpsLocate);
-//                  map.removeControl(homeExtent);
-//                  map.removeControl(fullscreen);
-//                  
-//                  map.removeControl(globalsearchToggle);
-//                  
-//                  btn.state('show-tools');
-//                  toolshidden = true;
-//                  //console.log(toolshidden+ ' state changed to showTools');
-//              }
-//      }],
-//    id: 'tools',
-// });
-//console.log('tools loaded');
-//var w = window.innerWidth;
-//console.log('screen width: ' + w);
-//if (w < 481) {
-//  tools.addTo(map);
-//  toolshidden = true;
-//  mobilescreen = true;
-//  //console.log('mobile tool toggle');
-//  //console.log(toolshidden + "mobilescreen: " + mobilescreen);
-//}else{
-//  leafletprint.addTo(map);
-//  gpsLocate.addTo(map);
-//  homeExtent.addTo(map);
-//  fullscreen.addTo(map);
-//  
-//  globalsearchToggle.addTo(map);
-//  
-//  toolshidden = false;
-//  //console.log(toolshidden + " " + mobilescreen);
-//}
-//window.onresize = function() {
-//  if ( toolshidden === true && window.innerWidth > 480 && mobilescreen === true) {
-//    leafletprint.addTo(map);
-//    gpsLocate.addTo(map);
-//    homeExtent.addTo(map);
-//    fullscreen.addTo(map);
-//    
-//    globalsearchToggle.addTo(map);
-//    
-//    map.removeControl(tools);
-//    toolshidden = false;
-//    mobilescreen = false;
-//    //console.log(toolshidden + " " + mobilescreen);
-//  }
-//  else if ( toolshidden === false && mobilescreen === true && window.innerWidth > 481) {
-//    tools.state('show-tools');
-//    mobilescreen = false;
-//    map.removeControl(tools);
-//    //console.log(toolshidden + "" + mobilescreen);
-//  }
-//  else if ( toolshidden === false && window.innerWidth < 481 && mobilescreen === false) {
-//    map.removeControl(leafletprint);
-//    map.removeControl(gpsLocate);
-//    map.removeControl(homeExtent);
-//    map.removeControl(fullscreen);
-//    
-//    map.removeControl(globalsearchToggle);
-//    
-//    tools.addTo(map);
-//    toolshidden = true;
-//    mobilescreen = true;
-//    //console.log(toolshidden + " " + mobilescreen);
-//  }
-//  else {}
-//};
-////--end tools toggle
-//
-////Close Layer Control on Layer Change
-////Close Layer Control on Layer Change on mobile
-//map.on('baselayerchange', function() {
-// if (L.Browser.mobile) {
-//   map.on('baselayerchange', function() {
-//     setTimeout(function() {
-//       $(".leaflet-control-layers").removeClass("leaflet-control-layers-expanded");
-//     },5000);
-//   });
-// }
-//});
-////end mobile tools menu
-//var loading = L.Control.loading({position:'topright'}).addTo(map);
-////end OVRDC Modern UI Toolbar
-//
-//  //search
-//  var searchhydrants = new L.Control.Search({
-//    layer: hcluster,
-//    initial: false,
-//    propertyName: 'hydrantName',
-//    circleLocation: false,
-//    collapsed: false,
-//    textPlaceholder: 'Search Hydrants: H-###...',
-//    zoom: '19'
-//  });
-//  searchhydrants.on('search_locationfound', function(e) {
-//    var layer = e.layer;
-//      layer.bindPopup('<p><img src="' + layer.feature.properties.url + '"' + 'width="250px"' + '/>' + '<br><span class="marker-title">' + layer.feature.properties.hydrantName + '</span></p>');
-//    setTimeout(function() {
-//      layer.openPopup();
-//      document.getElementById("info").innerHTML = '<hr><img src="' + layer.feature.properties.url + '"' + 'width="100%" alt="image"/><hr>';
-//      searchhydrants.collapse();
-//    }, 500);
-//  });
-//  map.addControl(searchhydrants);
-//  map.on('click', function(e) {
-//    document.getElementById("info").innerHTML = '<hr /><p><strong>You clicked the map at ' + e.latlng.lat + ' degrees latitude and ' + e.latlng.lng + ' degrees longitude.</strong></p>';
-//  });
-//  sidebar.show();
-//            
-            
-            
-        </script>
-	</head>
-
-	<body onload="init()">
-		<!--create information window for users giving map summary and data sources
-		<div id="infowindow" visibility: hidden title = "How to Use"><p>
-            <b>NOTE: If you require immediate medical attention, call 911!</b>
-            <br><br>
-            This map can be used to report various issues within the community. Simply click on the map to place a point where the issue exists, then select the type of issue and the priority level. You can see issues others in the community have already reported, and you can see the current status of all reports. After your report is submitted, it will be passed along to the appropriate party for resolution. </p>
-        </div>
-        
-		<!--create div for map title and info button
-        <div id="maptitle"><p id="mapT">Plumsted Township Community Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
-        </div>
-		
-        <!--create div for the map
-		<div id="mapid">
-        </div>
-        <div id="divEagleFilter" class="col-xs-12">
-            <div class="col-xs-4">
-                <input type="radio" name="troop" value="ALL" checked>All
-            </div>
-            <div class="col-xs-4">
-                <input type="radio" name="troop" value="9">9
-            </div>
-            <div class="col-xs-4">
-                <input type="radio" name="troop" value="19">19
-            </div>
-            <div class="col-xs-4">
-                <input type="radio" name="troop" value="109">109
-            </div>
-        </div>
-			   
-   </body>
 </html>
