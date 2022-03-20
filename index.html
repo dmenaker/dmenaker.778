@@ -1,11 +1,178 @@
 <!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Esri Leaflet</title>
+
+    <!-- Load Leaflet from CDN -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin="">
+    </script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@3.0.4/dist/esri-leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet-vector@3.0.0/dist/esri-leaflet-vector.js"></script>
+
+    <!-- Load Esri Leaflet Geocoder from CDN -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"
+    />
+    <script src="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.js"></script>
+                                                                                             
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        color: #323232;
+      }
+    </style>
+    
+
+    
+  </head>
+  
+  <body>
+    <div id="map"></div>
+
+    <script>
+      
+      const NELAT = 40.072466;
+      const NELONG = -74.493870;
+
+      const apiKey = "AAPK1e16693748da4ddba76fb41f2989c061AgGwancIT9TT8VytqRN7fzWLhovcNEpSpCQKkhXU6e6JuZELJk0Wnntc4naJwiqI";
+
+      const basemapEnum = "ArcGIS:Navigation";
+
+      const map = L.map("map", {
+        minZoom: 2
+
+      //}).setView([34.02700, -118.80543], 12); //Malibu
+
+      }).setView([40.072466, -74.493870], 12); //Center the view to New Egypt, NJ
+
+      L.esri.Vector.vectorBasemapLayer(basemapEnum, {
+        apiKey: apiKey
+      }).addTo(map);
+
+//Seach tool for finding a location
+//Drops a point marker on the map and displays a popup with the address and lat/long
+      const searchControl = L.esri.Geocoding.geosearch({
+        position: "topright",
+        placeholder: "Enter an address or place e.g. 102 Hawkin Rd",
+        useMapBounds: false,
+        providers: [
+          L.esri.Geocoding.arcgisOnlineProvider({
+            apikey: apiKey,
+            nearby: {
+              lat: NELAT,
+              lng: NELONG
+            }
+          })
+        ]
+      }).addTo(map);
+
+      const results = L.layerGroup().addTo(map);
+
+      searchControl.on("results", (data) => {
+        results.clearLayers();
+        for (let i = data.results.length - 1; i >= 0; i--) {
+          const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${
+            Math.round(data.results[i].latlng.lat * 100000) / 100000
+          }`;
+          const marker = L.marker(data.results[i].latlng);
+          marker.bindPopup(`<b>${lngLatString}</b><p>${data.results[i].properties.LongLabel}</p>`);
+          results.addLayer(marker);
+          marker.openPopup();
+        }
+      });
+      
+      const geocoder = L.esri.Geocoding.geocodeService({
+        apikey: apiKey
+      });
+
+//Drop a point marker and display the address and lat/long by clicking on the map
+      const layerGroup = L.layerGroup().addTo(map);
+
+      map.on("click", function (e) {
+        geocoder
+          .reverse()
+          .latlng(e.latlng)
+          .run(function (error, result) {
+            if (error) {
+              return;
+            }
+
+            const lngLatString = `${Math.round(result.latlng.lng * 100000) / 100000}, ${Math.round(result.latlng.lat * 100000) / 100000}`;
+
+            layerGroup.clearLayers();
+            marker = L.marker(result.latlng)
+              .addTo(layerGroup)
+              .bindPopup(`<b>${lngLatString}</b><p>${result.address.Match_addr}</p>`)
+              .openPopup();
+          });
+      });
+      /*
+      var trailheads = L.esri
+        .featureLayer({
+          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0"
+        })
+        .addTo(map);
+      
+      var trails = L.esri
+        .featureLayer({
+          url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0"
+        })
+        .addTo(map);
+      */
+      
+
+      
+      var reports = L.esri
+        .featureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0"
+        })
+        .addTo(map);
+      
+      reports.bindPopup(function (layer) {
+        return L.Util.template(
+          "<p>Issue Reported: {Report Type}</p>",
+          layer.feature.properties
+        );
+      });
+
+    </script>
+  </body>
+</html>
+
+<!--
 <html lang="en">
     <head>
         <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		<title>Community Reporting Tool</title>
 
-		<!--put your external stylesheet links here-->
+		put your external stylesheet links here
 		<link rel="stylesheet" href="lib/jquery-ui-1.12.1/jquery-ui.css">
 		<link rel="stylesheet" href="lib/leaflet.css">
 		<link rel="stylesheet" href="css/style.css">
@@ -22,11 +189,11 @@
         <script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"></script>
         
 
-        <script src="data/Eagle.js"></script>
+<!--        <script src="data/Eagle.js"></script>
         <script src="data/EmgServ.js"></script>
         <script src="data/Hos.js"></script>
         <script src="data/Mun.js"></script>
-        <script src="data/Rec.js"></script>
+        <script src="data/Rec.js"></script>-->
         
         
 <!--
@@ -36,7 +203,7 @@
             <a href='#' data-filter='19'>Troop 19</a>
             <a href='#' data-filter='109'>Troop 109</a>
         </nav>
--->
+
         
         <script type="text/javascript">
             //create blank function to create info window dialog when DOM is ready
@@ -57,11 +224,11 @@
             
             var map;
             
-            var eagleIcon = L.icon({
+/*            var eagleIcon = L.icon({
                 iconUrl: 'img/eagle.png',
                 iconSize: [32,42],
                 iconAnchor: [20,45]
-            });
+            });*/
 
             function init() {
 
@@ -77,7 +244,7 @@
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'});
 
 
-                //Eagle Projects
+/*                //Eagle Projects
                 var eagle = L.geoJson(eagleJson, {
                     onEachFeature: onEachFeature,
                     pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: eagleIcon})},
@@ -120,7 +287,7 @@
                         layer.bindPopup(feature.properties.Name);
                     },
                     color: "white"
-                }).addTo(map);
+                }).addTo(map);*/
 
                 var basemaps = {
                     "Dark Gray": gray,
@@ -134,9 +301,9 @@
                     "Hospitals": hos,
                     "Recreation": rec,
                     "Eagle Projects": eagle
-                };
+                };*/
 
-                L.control.layers(basemaps, overlaymaps).addTo(map);
+                L.control.layers(basemaps).addTo(map);
                 osm.addTo(map);
             
             
@@ -156,9 +323,9 @@
                 
             };
             
-            $('input[name=troop]').click(function(){
-                ar
-            })
+//            $('input[name=troop]').click(function(){
+//                ar
+//            })
             
             
             
@@ -414,18 +581,18 @@
 	</head>
 
 	<body onload="init()">
-		<!--create information window for users giving map summary and data sources-->
+		<!--create information window for users giving map summary and data sources
 		<div id="infowindow" visibility: hidden title = "How to Use"><p>
             <b>NOTE: If you require immediate medical attention, call 911!</b>
             <br><br>
             This map can be used to report various issues within the community. Simply click on the map to place a point where the issue exists, then select the type of issue and the priority level. You can see issues others in the community have already reported, and you can see the current status of all reports. After your report is submitted, it will be passed along to the appropriate party for resolution. </p>
         </div>
         
-		<!--create div for map title and info button-->
+		<!--create div for map title and info button
         <div id="maptitle"><p id="mapT">Plumsted Township Community Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
         </div>
 		
-        <!--create div for the map -->
+        <!--create div for the map
 		<div id="mapid">
         </div>
         <div id="divEagleFilter" class="col-xs-12">
