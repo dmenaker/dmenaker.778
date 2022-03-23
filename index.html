@@ -63,30 +63,29 @@
     
 <body>
 <!--create div for map title and info button-->
-    <div id="maptitle"><p id="mapT">Plumsted Township Community Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
+    <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
     </div>
     <div class="container-fluid">
       <div class="row content">
-        <div class="col-sm-3 sidenav">
+        <div class="col-sm-2 sidenav">
           <h4>Report New Issue</h4>
             <div class="form-group">
               <select class="form-control" id="Report">
-                  <option>Dead Animal</option>
-                  <option>Utility Pole Damaged</option>
-                  <option>Utility Wire Down</option>
-                  <option>Branch on Utility Wire</option>
-                  <option>Natural Gas Leak</option>
-                  <option>Water Leak</option>
-                  <option>Garbage Not Collected</option>
-                  <option>Recycling Not Collected</option>
-                  <option>Snow Covering Sidewalk</option>
-                  <option>Street Unplowed</option>
-                  <option>Litter in/on Side of Road</option>
-                  <option>Damaged Recreational Equipment</option>
-                  <option>Missing Street Sign</option>
-                  <option>Damaged Street Light</option>
-                  <option>Damaged Traffic Signal</option>
-                  <option>Dead Animal</option>
+                  <option value="UPD">Utility Pole Damaged</option>
+                  <option value="UWD">Utility Wire Down</option>
+                  <option value="BUW">Branch on Utility Wire</option>
+                  <option value="NGL">Natural Gas Leak</option>
+                  <option value="PWL">Water Leak</option>
+                  <option value="GNC">Garbage Not Collected</option>
+                  <option value="RNC">Recycling Not Collected</option>
+                  <option value="SCS">Snow Covering Sidewalk</option>
+                  <option value="SUP">Street Unplowed</option>
+                  <option value="LOR">Litter in/on Side of Road</option>
+                  <option value="DRE">Damaged Recreational Equipment</option>
+                  <option value="MSS">Missing Street Sign</option>
+                  <option value="DSL">Damaged Street Light</option>
+                  <option value="DTS">Damaged Traffic Signal</option>
+                  <option value="DAC">Dead Animal</option>
               </select>
             </div>
             <form>
@@ -100,7 +99,7 @@
               <label class="radio-inline"><input type="radio" name="status" checked>Active</label>
             </form>
         </div>
-        <div id="map" class="col-sm-9">
+        <div id="map" class="col-sm-10">
         </div>
       </div>
     </div>
@@ -188,6 +187,17 @@
                 layer.feature.properties
             );
         });
+        
+        map.on("click", function (e) {
+            const feat = L.marker(e.latlng).toGeoJSON();
+            reports.addFeature(feat, function (err, response) {
+                if (err) {
+                    return;
+                }
+                console.log(response);
+            });
+        });
+        
     </script>
 
     </body>
