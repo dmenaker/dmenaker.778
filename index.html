@@ -193,8 +193,8 @@
         map.on("click", function (e) {
             const feat = L.marker(e.latlng).toGeoJSON();
             feat.properties.ReportType = Report.value;
-            feat.properties.Priority = priority.value;
-            feat.properties.status = status.value;
+            //feat.properties.priority = priority.value;
+            //feat.properties.status = status.value;
             reports.addFeature(feat, function (err, response) {
                 if (err) {
                     return;
