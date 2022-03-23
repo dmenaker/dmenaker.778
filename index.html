@@ -90,13 +90,13 @@
             </div>
             <form>
                 <h4>Priority</h4>
-              <label class="radio-inline"><input type="radio" name="priority">High</label>
-              <label class="radio-inline"><input type="radio" name="priority">Moderate</label>
-              <label class="radio-inline"><input type="radio" name="priority">Low</label>
+              <label class="radio-inline"><input type="radio" name="priority" value="High">High</label>
+              <label class="radio-inline"><input type="radio" name="priority" value="Moderate">Moderate</label>
+              <label class="radio-inline"><input type="radio" name="priority" value="Low">Low</label>
             </form>
             <form>
                 <h4>Status</h4>
-              <label class="radio-inline"><input type="radio" name="status" checked>Active</label>
+              <label class="radio-inline"><input type="radio" name="status" value="Active" checked>Active</label>
             </form>
         </div>
         <div id="map" class="col-sm-10">
@@ -190,11 +190,15 @@
             );
         });
         
+        const report = document.querySelector("#Report");
+        const priority = document.querySelector("#priority");
+        const status = document.querySelector("#status");
+        
         map.on("click", function (e) {
             const feat = L.marker(e.latlng).toGeoJSON();
-            feat.properties.ReportType = Report.value;
-            //feat.properties.priority = priority.value;
-            //feat.properties.status = status.value;
+            feat.properties.ReportType = report.value;
+            feat.properties.priority = priority.value;
+            feat.properties.status = status.value;
             reports.addFeature(feat, function (err, response) {
                 if (err) {
                     return;
