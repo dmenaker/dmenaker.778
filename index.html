@@ -32,6 +32,8 @@
         crossorigin="">
     </script>
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
     
     <!-- Load Esri Leaflet Geocoder from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"/>
@@ -40,23 +42,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="css/style.css"/>
-    
-    <style>
+  
+      <style>
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 850px}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-    
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: 767px) {
@@ -67,52 +56,18 @@
       .row.content {height: auto;} 
     }
   </style>
-    
-    
 </head>
     
 <body>
 <!--create div for map title and info button-->
-    <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool<button class = "info"><img src = 'img/info.png'></button></p>
-    </div>
+    <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool</div>
     <div class="container-fluid">
       <div class="row content">
-        <div class="col-sm-2 sidenav">
-          <h4>Report New Issue</h4>
-            <div class="form-group">
-              <select id="Report">
-                  <option value="UPD">Utility Pole Damaged</option>
-                  <option value="UWD">Utility Wire Down</option>
-                  <option value="BUW">Branch on Utility Wire</option>
-                  <option value="NGL">Natural Gas Leak</option>
-                  <option value="PWL">Water Leak</option>
-                  <option value="GNC">Garbage Not Collected</option>
-                  <option value="RNC">Recycling Not Collected</option>
-                  <option value="SCS">Snow Covering Sidewalk</option>
-                  <option value="SUP">Street Unplowed</option>
-                  <option value="LOR">Litter in/on Side of Road</option>
-                  <option value="DRE">Damaged Recreational Equipment</option>
-                  <option value="MSS">Missing Street Sign</option>
-                  <option value="DSL">Damaged Street Light</option>
-                  <option value="DTS">Damaged Traffic Signal</option>
-                  <option value="DAC">Dead Animal</option>
-              </select>
-            </div>
-            <form>
-                <h4>Priority</h4>
-              <label class="radio-inline"><input type="radio" name="priority" value="High">High</label>
-              <label class="radio-inline"><input type="radio" name="priority" value="Moderate">Moderate</label>
-              <label class="radio-inline"><input type="radio" name="priority" value="Low">Low</label>
-            </form>
-            <form>
-                <h4>Status</h4>
-              <label class="radio-inline"><input type="radio" name="status" value="Active" checked>Active</label>
-            </form>
-        </div>
-        <div id="map" class="col-sm-10">
+        <div id="map">
         </div>
       </div>
     </div>
+ 
     
     <script>
         const NELAT = 40.072466;
@@ -122,19 +77,22 @@
         
         const basemapEnum = "ArcGIS:Navigation";
         
+        let latlng;
+        
         const map = L.map("map", {
+            drawControl: false,
             minZoom: 2
-        }).setView([40.072466, -74.493870], 12); //Center the view to New Egypt, NJ
-        L.esri.Vector.vectorBasemapLayer(basemapEnum, {
+            }).setView([40.072466, -74.493870], 12); //Center the view to New Egypt, NJ
+            L.esri.Vector.vectorBasemapLayer(basemapEnum, {
             apiKey: apiKey
         }).addTo(map);
 
-//Seach tool for finding a location
-//Drops a point marker on the map and displays a popup with the address and lat/long
+
+        //Drops a point marker on the map and displays a popup with the address and lat/long
         const searchControl = L.esri.Geocoding.geosearch({
             position: "topright",
             placeholder: "Enter an address or place e.g. 102 Hawkin Rd",
-            useMapBounds: false,
+            useMapBounds: true,
             providers: [
                 L.esri.Geocoding.arcgisOnlineProvider({
                     apikey: apiKey,
@@ -154,7 +112,7 @@
                 const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${Math.round(data.results[i].latlng.lat * 100000) / 100000
                 }`;
                 const marker = L.marker(data.results[i].latlng);
-                marker.bindPopup(`<b>${lngLatString}</b><p>${data.results[i].properties.LongLabel}</p>`);
+                marker.bindPopup(dropdown);
                 results.addLayer(marker);
                 marker.openPopup();
             }
@@ -164,37 +122,58 @@
             apikey: apiKey
         });
 
-//Drop a point marker and display the address and lat/long by clicking on the map
-/*        const layerGroup = L.layerGroup().addTo(map);
-
-        map.on("click", function (e) {
-            geocoder
-                .reverse()
-                .latlng(e.latlng)
-                .run(function (error, result) {
-                if (error) {
-                    return;
-                }
-                
-                const lngLatString = `${Math.round(result.latlng.lng * 100000) / 100000}, ${Math.round(result.latlng.lat * 100000) / 100000}`;
-                
-                layerGroup.clearLayers();
-                marker = L.marker(result.latlng)
-                    .addTo(layerGroup)
-                    .bindPopup(`<b>${lngLatString}</b><p>${result.address.Match_addr}</p>`)
-                    .openPopup();
-                });
+        //Define the pop up form for a new marker point
+        const dropdown =
+            `<h4>Issue to Report:</h4><p>
+            <select id="report">
+                <option value="Utility Pole Damaged">Utility Pole Damaged</option>
+                <option value="Utility Wire Down">Utility Wire Down</option>
+                <option value="Branch on Utility Wire">Branch on Utility Wire</option>
+                <option value="Natural Gas Leak">Natural Gas Leak</option>
+                <option value="Water Leak">Water Leak</option>
+                <option value="Garbage Not Collected">Garbage Not Collected</option>
+                <option value="Recycling Not Collected">Recycling Not Collected</option>
+                <option value="Snow Covering Sidewalk">Snow Covering Sidewalk</option>
+                <option value="Street Unplowed">Street Unplowed</option>
+                <option value="Litter in/on Side of Road">Litter in/on Side of Road</option>
+                <option value="Damaged Recreational Equipment">Damaged Recreational Equipment</option>
+                <option value="Missing Street Sign">Missing Street Sign</option>
+                <option value="Damaged Street Light">Damaged Street Light</option>
+                <option value="Damaged Traffic Signal">Damaged Traffic Signal</option>
+                <option value="Dead Animal">Dead Animal</option>
+            </select><p>
+            <h4>Priority:</h4>
+                <label class="radio-inline"><input type="radio" name="priority" value="High">High</label>
+                <label class="radio-inline"><input type="radio" name="priority" value="Moderate">Moderate</label>
+                <label class="radio-inline"><input type="radio" name="priority" value="Low">Low</label><p>
+            <h4>Status</h4>
+                <label class="radio-inline"><input type="radio" name="status" value="Active" checked>Active</label><p><br>
+            <button onclick="buttonFunction()">SUBMIT</button>`;
+        
+        //set new marker
+        map.on('click', e => {
+            const popup = L.popup()
+            .setLatLng(e.latlng)
+            .setContent(dropdown)
+            .openOn(map);
+            latLng = e.latlng;
         });
         
-        */
-        
+        buttonFunction = () => {
+            const dropdownValue = document.getElementById("report").value;
+            map.closePopup()
+            L.marker(latLng)
+            .bindPopup(dropdownValue)
+            .addTo(map)
+        };
+                
         //Add feature layer to map
-        var reports = L.esri
-        .featureLayer({
+        var reports = L.esri.featureLayer({
             url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0"
         }).addTo(map);
         
-        //Create pop up
+        
+        //Create pop up for feature layer
         reports.bindPopup(function (layer) {
             return L.Util.template(
                 "<p>Issue Reported: {ReportType}</p>",
@@ -202,25 +181,6 @@
             );
         });
         
-        
-        var report = document.querySelector('#Report');
-        //const priority = document.querySelector("#priority");
-        //const status = document.querySelector("#status");
-        
-        map.on('click', function (e) {
-            const feat = L.marker(e.latlng).toGeoJSON();
-            feat.properties.ReportType = report.value;
-            //feat.properties.priority = priority.value;
-            //feat.properties.status = status.value;
-            reports.addFeature(feat, function (err, response) {
-                if (err) {
-                    return;
-                }
-                console.log(response);
-            });
-        });
-        
     </script>
-
     </body>
 </html>
