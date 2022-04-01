@@ -87,6 +87,19 @@
             apiKey: apiKey
         }).addTo(map);
 
+        //Add feature layer to map
+        var reports = L.esri.featureLayer({
+            url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0"
+        }).addTo(map);
+        
+        
+        //Create pop up for feature layer
+        reports.bindPopup(function (layer) {
+            return L.Util.template(
+                "<p>Issue Reported: {ReportType}</p>",
+                layer.feature.properties
+            );
+        });
 
         //Drops a point marker on the map and displays a popup with the address and lat/long
         const searchControl = L.esri.Geocoding.geosearch({
@@ -143,11 +156,11 @@
                 <option value="Dead Animal">Dead Animal</option>
             </select><p>
             <h4>Priority:</h4>
-                <label class="radio-inline"><input type="radio" name="priority" value="High">High</label>
-                <label class="radio-inline"><input type="radio" name="priority" value="Moderate">Moderate</label>
-                <label class="radio-inline"><input type="radio" name="priority" value="Low">Low</label><p>
-            <h4>Status</h4>
-                <label class="radio-inline"><input type="radio" name="status" value="Active" checked>Active</label><p><br>
+            <select id="priority">
+                <option value="High">High</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Low">Low</option><p>
+            </select><p><br>
             <button onclick="buttonFunction()">SUBMIT</button>`;
         
         //set new marker
@@ -158,28 +171,26 @@
             .openOn(map);
             latLng = e.latlng;
         });
-        
+    
         buttonFunction = () => {
-            const dropdownValue = document.getElementById("report").value;
+            const reportValue = document.getElementById("report").value;
+            const priorityValue = document.getElementById("priority").value;
+            const statusValue = "Active";
             map.closePopup()
-            L.marker(latLng)
-            .bindPopup(dropdownValue)
-            .addTo(map)
+            console.log(reportValue);
+            console.log(priorityValue);
+            console.log(statusValue);
+            
+            const newMarker = L.marker(latLng).toGeoJSON();
+            //.bindPopup(dropdownValue)
+            //.addTo(map)
+            newMarker.properties.ReportType = reportValue;
+            newMarker.properties.Priority = priorityValue;
+            newMarker.properties.Status = statusValue;
+            reports.addFeature(newMarker, function (err, response){console.log(response)})
         };
                 
-        //Add feature layer to map
-        var reports = L.esri.featureLayer({
-            url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0"
-        }).addTo(map);
-        
-        
-        //Create pop up for feature layer
-        reports.bindPopup(function (layer) {
-            return L.Util.template(
-                "<p>Issue Reported: {ReportType}</p>",
-                layer.feature.properties
-            );
-        });
+
         
     </script>
     </body>
