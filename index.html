@@ -7,6 +7,7 @@
     
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
     
+    
     <!-- Load Leaflet from CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -43,30 +44,31 @@
 
     <link rel="stylesheet" href="css/style.css"/>
   
-      <style>
+    <style>
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 850px}
     
-    /* On small screens, set height to 'auto' for sidenav and grid */
+    /* On small screens, set height to 'auto' for sidenav and grid 
     @media screen and (max-width: 767px) {
       .sidenav {
         height: auto;
         padding: 15px;
       }
       .row.content {height: auto;} 
-    }
+    }*/
   </style>
 </head>
     
 <body>
+    
 <!--create div for map title and info button-->
-    <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool</div>
-    <div class="container-fluid">
-      <div class="row content">
-        <div id="map">
+   
+        <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool</div>
+        <div class="container-fluid">
+            <div class="row content">
+                <div id="map"></div>
+            </div>
         </div>
-      </div>
-    </div>
  
     
     <script>
