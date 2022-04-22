@@ -1,199 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Resident Reporting</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <title>Resident Reporting</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <script src="https://kit.fontawesome.com/312e4ca45f.js" crossorigin="anonymous"></script>
+        <!--link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"-->
     
     
-    <!-- Load Leaflet from CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin="">
-    </script>
+        <!-- Load Leaflet from CDN -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+        </script>
 
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet@3.0.4/dist/esri-leaflet.js"></script>
-    <script src="https://unpkg.com/esri-leaflet-vector@3.0.0/dist/esri-leaflet-vector.js"></script>
+        <!-- Load Esri Leaflet from CDN -->
+        <script src="https://unpkg.com/esri-leaflet@3.0.4/dist/esri-leaflet.js"></script>
+        <script src="https://unpkg.com/esri-leaflet-vector@3.0.0/dist/esri-leaflet-vector.js"></script>
 
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet@3.0.7/dist/esri-leaflet.js" 
-        integrity="sha512-ciMHuVIB6ijbjTyEdmy1lfLtBwt0tEHZGhKVXDzW7v7hXOe+Fo3UA1zfydjCLZ0/vLacHkwSARXB5DmtNaoL/g=="
-        crossorigin="">
-    </script>
+        <!-- Load Esri Leaflet from CDN -->
+        <script src="https://unpkg.com/esri-leaflet@3.0.7/dist/esri-leaflet.js" 
+            integrity="sha512-ciMHuVIB6ijbjTyEdmy1lfLtBwt0tEHZGhKVXDzW7v7hXOe+Fo3UA1zfydjCLZ0/vLacHkwSARXB5DmtNaoL/g=="
+            crossorigin="">
+        </script>
 
-    <!-- Load Esri Leaflet Vector from CDN -->
-    <script src="https://unpkg.com/esri-leaflet-vector@3.1.2/dist/esri-leaflet-vector.js"
-        integrity="sha512-SnA/TobYvMdLwGPv48bsO+9ROk7kqKu/tI9TelKQsDe+KZL0TUUWml56TZIMGcpHcVctpaU6Mz4bvboUQDuU3w=="
-        crossorigin="">
-    </script>
+        <!-- Load Esri Leaflet Vector from CDN -->
+        <script src="https://unpkg.com/esri-leaflet-vector@3.1.2/dist/esri-leaflet-vector.js"
+            integrity="sha512-SnA/TobYvMdLwGPv48bsO+9ROk7kqKu/tI9TelKQsDe+KZL0TUUWml56TZIMGcpHcVctpaU6Mz4bvboUQDuU3w=="
+            crossorigin="">
+        </script>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
     
-    <!-- Load Esri Leaflet Geocoder from CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"/>
-    <script src="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <!-- Load Esri Leaflet Geocoder from CDN -->
+        <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css"/>
+        <script src="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
   
-    <style>
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 850px}
+        <style>
+            /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+            .row.content {height: 850px}
     
-    /* On small screens, set height to 'auto' for sidenav and grid 
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;} 
-    }*/
-  </style>
-</head>
-    
-<body>
-    
-<!--create div for map title and info button-->
-   
+        </style>
+    </head>
+    <body>
+        
+        <!--create div for map title-->
         <div id="maptitle"><p id="mapT">Plumsted Township Resident Reporting Tool</div>
         <div class="container-fluid">
             <div class="row content">
                 <div id="map"></div>
             </div>
         </div>
- 
-    
-    <script>
-        const NELAT = 40.072466;
-        const NELONG = -74.493870;
         
-        const apiKey = "AAPK1e16693748da4ddba76fb41f2989c061AgGwancIT9TT8VytqRN7fzWLhovcNEpSpCQKkhXU6e6JuZELJk0Wnntc4naJwiqI";
-        
-        const basemapEnum = "ArcGIS:Navigation";
-        
-        let latlng;
-        
-        const map = L.map("map", {
-            drawControl: false,
-            minZoom: 2
-            }).setView([40.072466, -74.493870], 12); //Center the view to New Egypt, NJ
-            L.esri.Vector.vectorBasemapLayer(basemapEnum, {
-            apiKey: apiKey
-        }).addTo(map);
-
-        //Add feature layer to map
-        var reports = L.esri.featureLayer({
-            url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0"
-        }).addTo(map);
-        
-        
-        //Create pop up for feature layer
-        reports.bindPopup(function (layer) {
-            return L.Util.template(
-                "<p>Issue Reported: {ReportType}</p>",
-                layer.feature.properties
-            );
-        });
-
-        //Drops a point marker on the map and displays a popup with the address and lat/long
-        const searchControl = L.esri.Geocoding.geosearch({
-            position: "topright",
-            placeholder: "Enter an address or place e.g. 102 Hawkin Rd",
-            useMapBounds: true,
-            providers: [
-                L.esri.Geocoding.arcgisOnlineProvider({
-                    apikey: apiKey,
-                    nearby: {
-                    lat: NELAT,
-                    lng: NELONG
-                    }
-                })
-            ]
-        }).addTo(map);
-
-        const results = L.layerGroup().addTo(map);
-        
-        searchControl.on("results", (data) => {
-            results.clearLayers();
-            for (let i = data.results.length - 1; i >= 0; i--) {
-                const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${Math.round(data.results[i].latlng.lat * 100000) / 100000
-                }`;
-                const marker = L.marker(data.results[i].latlng);
-                marker.bindPopup(dropdown);
-                results.addLayer(marker);
-                marker.openPopup();
-            }
-        });
-      
-        const geocoder = L.esri.Geocoding.geocodeService({
-            apikey: apiKey
-        });
-
-        //Define the pop up form for a new marker point
-        const dropdown =
-            `<h4>Issue to Report:</h4><p>
-            <select id="report">
-                <option value="Utility Pole Damaged">Utility Pole Damaged</option>
-                <option value="Utility Wire Down">Utility Wire Down</option>
-                <option value="Branch on Utility Wire">Branch on Utility Wire</option>
-                <option value="Natural Gas Leak">Natural Gas Leak</option>
-                <option value="Water Leak">Water Leak</option>
-                <option value="Garbage Not Collected">Garbage Not Collected</option>
-                <option value="Recycling Not Collected">Recycling Not Collected</option>
-                <option value="Snow Covering Sidewalk">Snow Covering Sidewalk</option>
-                <option value="Street Unplowed">Street Unplowed</option>
-                <option value="Litter in/on Side of Road">Litter in/on Side of Road</option>
-                <option value="Damaged Recreational Equipment">Damaged Recreational Equipment</option>
-                <option value="Missing Street Sign">Missing Street Sign</option>
-                <option value="Damaged Street Light">Damaged Street Light</option>
-                <option value="Damaged Traffic Signal">Damaged Traffic Signal</option>
-                <option value="Dead Animal">Dead Animal</option>
-            </select><p>
-            <h4>Priority:</h4>
-            <select id="priority">
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option><p>
-            </select><p><br>
-            <button onclick="buttonFunction()">SUBMIT</button>`;
-        
-        //set new marker
-        map.on('click', e => {
-            const popup = L.popup()
-            .setLatLng(e.latlng)
-            .setContent(dropdown)
-            .openOn(map);
-            latLng = e.latlng;
-        });
-    
-        buttonFunction = () => {
-            const reportValue = document.getElementById("report").value;
-            const priorityValue = document.getElementById("priority").value;
-            const statusValue = "Active";
-            map.closePopup()
-            console.log(reportValue);
-            console.log(priorityValue);
-            console.log(statusValue);
+        <script>
             
-            const newMarker = L.marker(latLng).toGeoJSON();
-            //.bindPopup(dropdownValue)
-            //.addTo(map)
-            newMarker.properties.ReportType = reportValue;
-            newMarker.properties.Priority = priorityValue;
-            newMarker.properties.Status = statusValue;
-            reports.addFeature(newMarker, function (err, response){console.log(response)})
-        };
+            //Slide out menu js
+            L.Control.SlideMenu = L.Control.extend({
+                options: {
+                    position: 'topleft',
+                    menuposition: 'topleft', // topleft,topright,bottomleft,bottomright
+                    width: '300px',
+                    height: '100%',
+                    direction: 'horizontal', // vertical or horizontal
+                    changeperc: '10',
+                    delay: '10',
+                    icon: 'fa-bars',
+                    hidden: false
+                },
                 
-
+                initialize: function(innerHTML, options){
+                    L.Util.setOptions(this, options);
+                    this._innerHTML = innerHTML;
+                    this._isLeftPosition = this.options.menuposition == 'topleft' ||
+                        this.options.menuposition == 'bottomleft' ? true : false;
+                    this._isTopPosition = this.options.menuposition == 'topleft' ||
+                        this.options.menuposition == 'topright' ? true : false;
+                    this._isHorizontal = this.options.direction == 'horizontal' ? true : false;
+                },
+                
+                onAdd: function(map){
+                    this._container = L.DomUtil.create('div', 'leaflet-control-slidemenu leaflet-bar leaflet-control');
+                    var link = L.DomUtil.create('a', 'leaflet-bar-part leaflet-bar-part-single', this._container);
+                    link.title = 'Instructions';
+                    L.DomUtil.create('span', this.options.icon, link);
+                    this._menu = L.DomUtil.create('div', 'leaflet-menu', map._container);
+                    this._menu.style.width = this.options.width;
+                    this._menu.style.height = this.options.height;
+                    
+                    if(this._isHorizontal){
+                        var frominit = -(parseInt(this.options.width, 10));
+                        if(this._isLeftPosition){
+                            this._menu.style.left = '-' + this.options.width;
+                        }
+                        else{
+                            this._menu.style.right = '-' + this.options.width;
+                        }
+                        if(this._isTopPosition){
+                            this._menu.style.top = '0px';
+                        }
+                        else{
+                            this._menu.style.bottom = '0px';
+                        }
+                    }
+                    else{
+                        var frominit = -(parseInt(this.options.height, 10));
+                        if(this._isLeftPosition){
+                            this._menu.style.left = '0px';
+                        }
+                        else{
+                            this._menu.style.right = '0px';
+                        }
+                        if(this._isTopPosition){
+                            this._menu.style.top = '-' + this.options.height;
+                        }
+                        else{
+                            this._menu.style.bottom = '-' + this.options.height;
+                        }
+                    }
+                    var closeButton = L.DomUtil.create('button', 'leaflet-menu-close-button', this._menu);
+                    
+                    if(this._isHorizontal){
+                        if(this._isLeftPosition){
+                            closeButton.style.float = 'right';
+                            L.DomUtil.addClass(closeButton, 'fas fa-chevron-left');
+                        }
+                        else{
+                            closeButton.style.float = 'left';
+                            L.DomUtil.addClass(closeButton, 'fas fa-chevron-right');
+                        }
+                    }
+                    else{
+                        if(this._isTopPosition){
+                            closeButton.style.float = 'right';
+                            L.DomUtil.addClass(closeButton, 'fas fa-chevron-up');
+                        }
+                        else{
+                            closeButton.style.float = 'right';
+                            L.DomUtil.addClass(closeButton, 'fas fa-chevron-down');
+                        }
+                    }
+                    this._contents = L.DomUtil.create('div', 'leaflet-menu-contents', this._menu);
+                    this._contents.innerHTML = this._innerHTML;
+                    this._contents.style.clear = 'both';
+                    
+                    if(this._isHorizontal){
+                        var ispx = this.options.width.slice(-1) == 'x' ? true : false;
+                        var unit = parseInt(this.options.width, 10) * parseInt(this.options.changeperc, 10) / 100;
+                    }
+                    else{
+                        var ispx = this.options.height.slice(-1) == 'x' ? true : false;
+                        var unit = parseInt(this.options.height, 10) * parseInt(this.options.changeperc, 10) / 100;
+                    }
+                    L.DomEvent.disableClickPropagation(this._menu);
+                    L.DomEvent
+                        .on(link, 'click', L.DomEvent.stopPropagation)
+                        .on(link, 'click', function(){
+                        //Open
+                        this._animate(this._menu, frominit, 0, true, ispx, unit);}, this)
+                        .on(closeButton, 'click', L.DomEvent.stopPropagation)
+                        .on(closeButton, 'click', function(){
+                        //Close
+                        this._animate(this._menu, 0, frominit, false, ispx, unit);}, this);
+                    L.DomEvent.on(this._menu, 'mouseover', function(){
+                        map.scrollWheelZoom.disable();
+                    });
+                    L.DomEvent.on(this._menu, 'mouseout', function(){
+                        map.scrollWheelZoom.enable();
+                    });
+                    
+                    if(this.options.hidden){
+                        this.hide();
+                    }
+                    return this._container;
+                },
+                
+                onRemove: function(map){
+                //Remove sliding menu from DOM
+                    map._container.removeChild(this._menu);
+                    delete this._menu;
+                },
+                
+                setContents: function(innerHTML){
+                    this._innerHTML = innerHTML;
+                    this._contents.innerHTML = this._innerHTML;
+                },
+                
+                _animate: function(menu, from, to, isOpen, ispx, unit){
+                    if(this._isHorizontal){
+                        if(this._isLeftPosition){
+                            menu.style.left = from + (ispx ? 'px' : '%');
+                        }
+                        else{
+                            menu.style.right = from + (ispx ? 'px' : '%');
+                        }
+                    }
+                    else{
+                        if(this._isTopPosition){
+                            menu.style.top = from + (ispx ? 'px' : '%');
+                        }
+                        else{
+                            menu.style.bottom = from + (ispx ? 'px' : '%');
+                        }
+                    }
+                    if(from != to){
+                        setTimeout(function(slideMenu){
+                            var value = isOpen ? from + unit : from - unit;
+                            slideMenu._animate(slideMenu._menu, value, to, isOpen, ispx, unit);}, parseInt(this.options.delay), this);
+                    }
+                    else{
+                        return;
+                    }
+                },
+                
+                hide: function () {
+                    this._container.style.display = 'none';
+                },
+                
+                show: function () {
+                    this._container.style.display = 'inherit';
+                }
+            });
+            
+            L.control.slideMenu = function(innerHTML, options) {
+                return new L.Control.SlideMenu(innerHTML, options);
+            };
+            
+            
+            //API key for Geoapify custom markers
+            const myGEOAPIKey = "fd03ba96b4d24b72a14ae51836acafc1";
         
-    </script>
+            const NELAT = 40.072466;
+            const NELONG = -74.493870;
+        
+            //esri API key
+            const apiKey = "AAPK1e16693748da4ddba76fb41f2989c061AgGwancIT9TT8VytqRN7fzWLhovcNEpSpCQKkhXU6e6JuZELJk0Wnntc4naJwiqI";
+        
+            //Set basemap
+            const basemapEnum = "ArcGIS:Navigation";
+        
+            let latlng;
+        
+            //Instantiate map
+            const map = L.map("map", {
+                drawControl: false,
+                minZoom: 2
+                }).setView([40.072466, -74.493870], 12); //Center the view to New Egypt, NJ
+                L.esri.Vector.vectorBasemapLayer(basemapEnum, {
+                apiKey: apiKey,
+                attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | © OpenStreetMap <a href="https://www.openstreetmap.org/copyright" target="_blank">contributors</a>'
+            }).addTo(map);
+
+            
+            //Add feature layer to map
+            var reports = L.esri.featureLayer({
+                url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/resident_hazard_report/FeatureServer/0",
+                pointToLayer: (geojson, latlng) => {
+                    return L.marker(latlng, {
+                    });
+                }
+            }).addTo(map);
+        
+        
+            //Create pop up for feature layer
+            reports.bindPopup(function (layer) {
+                return L.Util.template(
+                    "<p>Issue Reported: {ReportType}</p>",
+                    layer.feature.properties
+                );
+            });
+
+            //Define the pop up form for a new marker point
+            const dropdown =
+                `<h4>Issue to Report:</h4><p>
+                <select id="report">
+                    <option selected disabled>Choose Issue to Report</option>
+                    <option value="Utility Pole Damaged">Utility Pole Damaged</option>
+                    <option value="Utility Wire Down">Utility Wire Down</option>
+                    <option value="Branch on Utility Wire">Branch on Utility Wire</option>
+                    <option value="Natural Gas Leak">Natural Gas Leak</option>
+                    <option value="Water Leak">Water Leak</option>
+                    <option value="Garbage Not Collected">Garbage Not Collected</option>
+                    <option value="Recycling Not Collected">Recycling Not Collected</option>
+                    <option value="Snow Covering Sidewalk">Snow Covering Sidewalk</option>
+                    <option value="Street Unplowed">Street Unplowed</option>
+                    <option value="Litter in/on Side of Road">Litter in/on Side of Road</option>
+                    <option value="Damaged Recreational Equipment">Damaged Recreational Equipment</option>
+                    <option value="Missing Street Sign">Missing Street Sign</option>
+                    <option value="Damaged Street Light">Damaged Street Light</option>
+                    <option value="Damaged Traffic Signal">Damaged Traffic Signal</option>
+                    <option value="Dead Animal">Dead Animal</option>
+                </select><p>
+                <h4>Priority:</h4>
+                <select id="priority">
+                    <option selected disabled>Choose Priority Level</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option><p>
+                </select><p>
+                <h4>Description:</h4>
+                <textarea id="description" rows="5" cols="30">
+                </textarea><p><br>
+                <button onclick="buttonFunction()">SUBMIT</button>`;
+        
+            //set new marker
+            map.on('click', e => {
+                const popup = L.popup()
+                .setLatLng(e.latlng)
+                .setContent(dropdown)
+                .openOn(map);
+                latLng = e.latlng;
+            });
+            
+            buttonFunction = () => {
+                const reportValue = document.getElementById("report").value;
+                const priorityValue = document.getElementById("priority").value;
+                const descripValue = document.getElementById("description").value;
+                const statusValue = "Active";
+                map.closePopup()
+                console.log(reportValue);
+                console.log(priorityValue);
+                console.log(statusValue);
+                console.log(descripValue);
+                
+                const newMarker = L.marker(latLng).toGeoJSON();
+                newMarker.properties.ReportType = reportValue;
+                newMarker.properties.Priority = priorityValue;
+                newMarker.properties.Description = descripValue;
+                newMarker.properties.Status = statusValue;
+                reports.addFeature(newMarker, function (err, response){console.log(response)})
+            };
+        
+            //Create text for slide out box
+            var header = '<br><h3>Instructions</h3>';
+            var contents = '<hr>';
+            contents += '1) Click or tap on a marker to find out what issues were already reported in the area.<br>';
+            contents += '2) Click or tap on the map to report a new issue. In the pop up box, select the type of issue to report and the severity level. Include a detailed description to assist in locating the issue or any other information you would like to pass along.<br>';
+            contents += '3) Click the Submit button to log your report.<br>';      
+            contents += '<br>Thank you for helping to improve our community!<br>';
+            
+            //Create slide out
+            var slideMenu = L.control.slideMenu('', {position: 'topright', menuposition: 'topright', width: '30%', height: '33%', delay: '50', icon: 'fa-solid fa-bars'}).addTo(map);
+                slideMenu.setContents(header + contents);
+            
+        </script>
     </body>
 </html>
