@@ -340,13 +340,14 @@
         
             //Create text for slide out box
             var header = '<h3>Instructions</h3>';
-            var contents = '1) Click or tap on a marker to find out what issues were already reported in the area.<br>';
+            var contents = 'IF YOU NEED IMMEDIATE ASSISTANCE FROM THE POLICE, FIRE, OR EMS, CALL 911 NOW!<br><br>';
+            contents += '1) Click or tap on a marker to find out what issues were already reported in the area.<br>';
             contents += '2) Click or tap on the map to report a new issue. In the pop up box, select the type of issue to report and the severity level. Include a detailed description to assist in locating the issue or any other information you would like to pass along.<br>';
             contents += '3) Click the Submit button to log your report.<br>';      
             contents += '<br><h4>Thank you for helping to improve our community!</h4><br>';
             
             //Create slide out
-            var slideMenu = L.control.slideMenu('', {position: 'topright', menuposition: 'topright', width: '35%', height: '35%', delay: '50', icon: 'fa-solid fa-bars'}).addTo(map);
+            var slideMenu = L.control.slideMenu('', {position: 'topright', menuposition: 'topright', width: '35%', height: '40%', delay: '50', icon: 'fa-solid fa-bars'}).addTo(map);
                 slideMenu.setContents(header + contents);
             
         </script>
